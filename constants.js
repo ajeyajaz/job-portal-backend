@@ -4,3 +4,5 @@ export const USER_ROLES = {
     RECRUITER: "RECRUITER",
     ADMIN: "ADMIN"
 }
+
+export const SALT_ROUDS =  10;

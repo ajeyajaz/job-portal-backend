@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
-import { USER_ROLES } from "../constants";
-import { roleSchema } from './role'
+import bcrypt from 'bcrypt'
+import { USER_ROLES } from "../constants.js";
+import { roleSchema } from './role.model.js'
+import { SALT_ROUDS} from '../constants.js'
+
 
 
 const userSchema = new mongoose.Schema({
@@ -41,5 +44,13 @@ const userSchema = new mongoose.Schema({
         default: null
     }
 }, { timestamps:true });
+
+
+// middlewares
+
+userSchema.pre('save', async function(){
+    if(this.isModified('password'))
+        this.password = await bcrypt.hash(this.password, SALT_ROUDS);
+});
 
 export const User = mongoose.model("User", userSchema);
