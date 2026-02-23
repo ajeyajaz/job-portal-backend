@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { ROLES } from "../constants";
+import { USER_ROLES } from "../constants";
 import { roleSchema } from './role'
 
 
@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
     },
     role:{
         type:String,
-        default: ROLES.USER
+        default: USER_ROLES.USER
     },
     preferences: {
         type: [roleSchema],
