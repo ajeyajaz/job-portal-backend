@@ -1,7 +1,10 @@
 import Joi from "joi";
+import { USER_ROLES } from '../constants.js'
 
 
-const emailRule = Joi.string()
+const emailRule = Joi
+    .string()
+    .trim()
     .email()
     .required()
     .messages({
@@ -9,7 +12,9 @@ const emailRule = Joi.string()
         "string.empty": "Email is required",
 });
 
-const passwordRule = Joi.string()
+const passwordRule = Joi
+    .string()
+    .trim()
     .min(8)
     .max(255)
     .pattern(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&]).+$/)
@@ -25,6 +30,7 @@ const passwordRule = Joi.string()
 
 export const registerSchema = Joi.object({
     firstName: Joi.string()
+      .trim()
       .min(3)
       .max(255)
       .required()
@@ -35,6 +41,7 @@ export const registerSchema = Joi.object({
       }),
 
     lastName: Joi.string()
+      .trim()
       .min(1)
       .max(255)
       .required()
@@ -44,7 +51,19 @@ export const registerSchema = Joi.object({
         "string.max": "Last name must not exceed 255 characters",
       }),
     email: emailRule,
-    password: passwordRule
+    password: passwordRule,
+    role: Joi.
+      string()
+      .trim()
+      .custom((value, helpers)=>{
+        if(![USER_ROLES.USER, USER_ROLES.RECRUITER].includes(value))
+          return helpers.error('string.invalidRole');
+        return value;
+      })
+      .required()
+       .messages({
+          "string.invalidRole": "invalid role",
+    }),
 });
 
 
