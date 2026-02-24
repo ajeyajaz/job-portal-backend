@@ -56,9 +56,12 @@ export const registerSchema = Joi.object({
       string()
       .trim()
       .custom((value, helpers)=>{
-        if(![USER_ROLES.USER, USER_ROLES.RECRUITER].includes(value))
+        const role = value.toUpperCase();
+
+        if(![USER_ROLES.USER, USER_ROLES.RECRUITER].includes(role))
           return helpers.error('string.invalidRole');
-        return value;
+        
+        return role;
       })
       .required()
        .messages({

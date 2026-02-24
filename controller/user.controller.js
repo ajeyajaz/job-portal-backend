@@ -4,7 +4,7 @@ import { User } from '../model/user.model.js';
 export async function register(req, res, next) {
     /*
     receives - validated
-        firstName, lastName, email, password
+        firstName, lastName, email, password, role
     returns 
         firstName, lastName, email
     */
@@ -30,3 +30,26 @@ export async function register(req, res, next) {
     }
 
 }
+
+export async function login(req, res, next) {
+
+    /*
+    receives - validated
+        email, password
+    returns 
+        jwt- token
+    */
+    const data = req.validatedData;
+
+    const user = await User.findOne({email: data.email});
+    if(!user) return res.status(404).send('user not found.');
+
+    // password validation
+    const password = await user.checkPassword(data.password);
+    if(!password) return res.status(400).send('invalid email or password');
+
+    // token generation
+    const token = user.generateAccessToken();
+    return res.status(200).json(token);
+}
+
