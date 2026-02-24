@@ -53,3 +53,16 @@ export async function login(req, res, next) {
     return res.status(200).json(token);
 }
 
+export async function me(req, res, next) {
+
+    const user = await User.findById(req.user._id);
+    if(!user) return res.status(404).send('User not found.');
+
+    return res.status(200).json({
+        id: user._id,
+        fistName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        role: user.role
+    });
+}
