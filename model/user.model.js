@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { USER_ROLES } from "../constants.js";
-import { roleSchema } from './role.model.js'
 import { SALT_ROUDS} from '../constants.js'
+import { skillSchema } from './skill.model.js'
 
 
 
@@ -24,7 +24,8 @@ const userSchema = new mongoose.Schema({
         type: String,
         unique: true,
         required:true,
-        maxLength: 255
+        maxLength: 255,
+        lowercase: true
     },
     password: {
         type: String,
@@ -36,14 +37,18 @@ const userSchema = new mongoose.Schema({
         type:String,
         default: null
     },
-    role:{
+    role: {
         type:String,
         default: USER_ROLES.USER
     },
-    preferences: {
-        type: [roleSchema],
-        default: null
+    skills: [skillSchema],
+
+    preferedLocation: {
+        type: String,
+        lowercase: true,
+        default: null,
     }
+
 }, { timestamps:true });
 
 
