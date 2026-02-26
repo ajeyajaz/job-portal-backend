@@ -1,37 +1,22 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { User } from '../model/user.model.js';
 import AppError from '../utils/AppError.js'
+import userRepository from '../repository/user.repository.js';
 
 
 class UserService{
 
     async get(filter){
-        const user =  await User.findOne(filter);
-        if(!user) throw new AppError(404, 'User not found.')
-        return {
-            id: user._id,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            password: user.password,
-            role: user.role,
-            skills: user.skills,
-            preferedLocation: user.preferedLocation
-        }
+        const user = await userRepository.get(filter);
+        if(!user) 
+            throw new AppError(404, 'User not found.');
+        return user;
     }
+
 
     async create(data){
         try{
-            const user = new User(data);
-            await  user.save();
-
-            return {
-                id: user._id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email
-            };
+            return await userRepository.create(data);
         }
         catch(ex){
             if(ex.code === 11000 && ex.keyPattern.email)
@@ -41,10 +26,12 @@ class UserService{
         }
     }
 
+
     async checkPassword(user, password){
         return await bcrypt.compare(password, user.password)
     }
 
+    
     generateAccessToken(user){
         return jwt.sign({id: user._id,
                 email: user.email,

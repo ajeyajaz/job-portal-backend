@@ -1,7 +1,7 @@
 import userService from '../service/user.service.js'
 
 
-export async function register(req, res, next) {
+export async function register(req, res) {
     //receives - validated
         //firstName, lastName, email, password, role
 
@@ -14,7 +14,7 @@ export async function register(req, res, next) {
 
 }
 
-export async function login(req, res, next) {
+export async function login(req, res) {
     /*
     receives - validated
         email, password
@@ -22,15 +22,10 @@ export async function login(req, res, next) {
     const {email, password} = req.validatedData;
     
     const user = await userService.get({ email })
-    if(!user) return res.status(404).json({
-        success: false,
-        message: 'Invalid email or password'
-    });
-    
 
     // password validation
-    const valid = await userService.checkPassword(user, password)
-    if(!valid) return res.status(400).json({
+    const isValid = await userService.checkPassword(user, password)
+    if(!isValid) return res.status(400).json({
         success: false,
         message: 'Invalid email or password'
     });
@@ -44,14 +39,9 @@ export async function login(req, res, next) {
     });
 }
 
-export async function me(req, res, next) {
+export async function me(req, res) {
 
-    const user = await userService.get({_id: req.user._id});
-    if(!user) return res.status(404).json({
-        success: false,
-        message: 'User not found.'
-    })
-
+    const { password, ...user } = (await userService.get({_id: req.user.id})).toObject();
     return res.status(200).json({
         success: true,
         data: user
