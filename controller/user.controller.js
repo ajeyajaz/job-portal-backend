@@ -63,6 +63,8 @@ export async function me(req, res, next) {
         fistName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        role: user.role
+        role: user.role,
+        skills: user.skills,
+        preferedLocation: user.preferedLocation
     });
 }
