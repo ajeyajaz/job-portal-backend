@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema({
     },
     skills: [skillSchema],
 
-    preferedLocation: {
+    preferredLocation: {
         type: String,
         lowercase: true,
         default: null,

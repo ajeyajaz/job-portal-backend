@@ -66,7 +66,7 @@ export async function me(req, res) {
             resume: user.resume,
             role: user.role,
             skills: user.skills,
-            preferedLocation: user.preferedLocation
+            preferredLocation: user.preferedLocation
         } 
     });
 }
