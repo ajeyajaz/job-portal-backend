@@ -1,22 +1,20 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import AppError from '../utils/AppError.js'
-import userRepository from '../repository/user.repository.js';
+import { User } from '../model/user.model.js'
 
 
 class UserService{
 
     async get(filter){
-        const user = await userRepository.get(filter);
-        if(!user) 
-            throw new AppError(404, 'User not found.');
-        return user;
+        return await User.findOne(filter);
     }
 
 
     async create(data){
         try{
-            return await userRepository.create(data);
+            const user = new User(data);
+            return await user.save();
         }
         catch(ex){
             if(ex.code === 11000 && ex.keyPattern.email)
