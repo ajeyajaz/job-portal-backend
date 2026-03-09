@@ -7,11 +7,11 @@ const companySchema = new mongoose.Schema({
         minLength: 1,
         maxLength: 255,
         required: true,
-        index: true
     },
     name_lc: {
         type: String,
-        lowercase: true
+        lowercase: true,
+        index: true
     },
     website: {
         type: String,
@@ -27,9 +27,19 @@ const companySchema = new mongoose.Schema({
     recruiter: {
         type: mongoose.ObjectId,
         ref: 'User',
-        index: true
+        index: true,
+        required: true
     }
 }, {timestamps: true})
+
+
+companySchema.pre('save', function(){
+    if(this.isModified('name')){
+        this.name_lc = this.name.toLowerCase();
+    }
+
+    console.log('this', this);
+});
 
 export const Company = mongoose.model('Company', companySchema);
 

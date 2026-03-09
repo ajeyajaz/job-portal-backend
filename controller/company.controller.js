@@ -13,7 +13,10 @@ export async function createCompany(req, res) {
         message: 'user not found.'
     });
 
-    const company = await companyService.create(req.validatedData);
+    const company = await companyService.create({
+        ...req.validatedData, recruiter: user._id
+    });
+    
     return res.status(201).json({
         success: true,
         data: company
