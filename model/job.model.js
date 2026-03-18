@@ -8,21 +8,17 @@ const jobSchema = new mongoose.Schema({
     type: String,
     maxLength: 50,
     required: true,
-    trim : true
   },
 
   title_lc: {
     type: String,
     index: true,
-    lower: true,
-    trim : true
   },
 
   description: {
     type: String,
     maxLength: 255,
     required: true,
-    trim : true
   },
 
   company: {
@@ -34,7 +30,6 @@ const jobSchema = new mongoose.Schema({
   location: {
     type: String,
     maxLength: 255,
-    trim: true,
     index: true
   },
 
@@ -50,12 +45,14 @@ const jobSchema = new mongoose.Schema({
   jobType: {
     type: String,
     enum: JOB_TYPE_LIST,
+    required: true,
     index: true
   },
 
   experienceRequired: {
     type: Number,
-    min: 0
+    min: 0,
+    default: 0
   },
 
   skillsRequired: [skillSchema],
@@ -63,15 +60,24 @@ const jobSchema = new mongoose.Schema({
   postedBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    index: true
   },
 
   status: {
     type: String,
     enum: JOB_STATUS_LIST,
-    default: JOB_STATUS.OPEN
+    default: JOB_STATUS.OPEN,
   }
 
 }, { timestamps: true });
+
+
+
+jobSchema.pre('save', function(){
+  if(this.isModified('title'))
+    this.title_lc = this.title_lc.toLowerCase();
+});
+
 
 
 export const Job = mongoose.model("Job", jobSchema)

@@ -3,7 +3,8 @@ export const  error = (err, req, res, next) => {
 
     res.status(statusCode).json({
         success: false,
-        message: err.message || "Something went wrong"
+        message: err.message || "Something went wrong",
+        code : err.errorCode
     });
     console.log(err)
 };

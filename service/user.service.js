@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import AppError from '../utils/AppError.js'
 import { User } from '../model/user.model.js'
+import { AUTH_ERRORS } from '../constants.js'
 
 
 class UserService{
@@ -18,7 +19,7 @@ class UserService{
         }
         catch(ex){
             if(ex.code === 11000 && ex.keyPattern.email)
-                throw new AppError(409, 'email already registered.');
+                throw new AppError(409, AUTH_ERRORS.EMAIL_EXISTS.message, AUTH_ERRORS.EMAIL_EXISTS.code);
 
             throw new AppError();
         }
