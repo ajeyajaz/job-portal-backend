@@ -52,14 +52,14 @@ export const AUTH_ERRORS = {
     message: "No account found with this email."
   },
 
-  PASSWORD_TOO_WEAK: {
-    code: "PASSWORD_TOO_WEAK",
-    message: "Password must be at least 8 characters long."
-  },
-
   TOKEN_EXPIRED: {
     code: "TOKEN_EXPIRED",
     message: "Session expired. Please log in again."
+  },
+
+  NO_TOKEN: {
+    code: "NO_TOKEN",
+    message: "no auth token found."
   },
 
   UNAUTHORIZED: {
