@@ -31,22 +31,23 @@ export const JobSchema = Joi.object({
     .min(JOB_SALARY.MAX_SALARY)
     .optional(),
 
-  jobType: Joi.string()
-    .valid(...JOB_TYPE_LIST)
+  jobType: Joi
+    .array()
+    .items(Joi.string().valid(...JOB_TYPE_LIST))
     .required(),
 
   experienceRequired: Joi.number()
     .min(0)
     .optional(),
 
-  skillsRequired: Joi.array().items(
-    Joi.object({
-      name: Joi.string()
-        .hex()
-        .length(24)
-        .required()
-    })
-  ),
+  // skillsRequired: Joi.array().items(
+  //   Joi.object({
+  //     name: Joi.string()
+  //       .hex()
+  //       .length(24)
+  //       .required()
+  //   })
+  // ),
 
   postedBy: Joi.string()
     .hex()

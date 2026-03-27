@@ -17,7 +17,7 @@ const jobSchema = new mongoose.Schema({
 
   description: {
     type: String,
-    maxLength: 255,
+    maxLength: 1024,
     required: true,
   },
 
@@ -37,14 +37,14 @@ const jobSchema = new mongoose.Schema({
     type: Number,
     min: 1000,
   },
+
   salaryMax: {
     type: Number,
     min: 1000
   },
 
   jobType: {
-    type: String,
-    enum: JOB_TYPE_LIST,
+    type: Array,
     required: true,
     index: true
   },
@@ -55,7 +55,7 @@ const jobSchema = new mongoose.Schema({
     default: 0
   },
 
-  skillsRequired: [skillSchema],
+  // skillsRequired: [skillSchema],
 
   postedBy: {
     type: mongoose.Schema.Types.ObjectId,
@@ -67,6 +67,7 @@ const jobSchema = new mongoose.Schema({
     type: String,
     enum: JOB_STATUS_LIST,
     default: JOB_STATUS.OPEN,
+    lowerCase: true
   }
 
 }, { timestamps: true });
@@ -75,7 +76,7 @@ const jobSchema = new mongoose.Schema({
 
 jobSchema.pre('save', function(){
   if(this.isModified('title'))
-    this.title_lc = this.title_lc.toLowerCase();
+    this.title_lc = this.title.toLowerCase();
 });
 
 
