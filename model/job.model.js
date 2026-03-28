@@ -55,12 +55,8 @@ const jobSchema = new mongoose.Schema({
   },
 
   skillsRequired: [{
-    _id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Skill",
-      index: true
-    },
-    name: String
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Skill",
   }],
 
   postedBy: {

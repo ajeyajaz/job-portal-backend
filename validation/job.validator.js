@@ -47,11 +47,6 @@ export const JobSchema = Joi.object({
         .optional()
   ),
 
-  postedBy: Joi.string()
-    .hex()
-    .length(24)
-    .required(),
-
   status: Joi.string()
     .valid(...JOB_STATUS_LIST)
     .optional()
