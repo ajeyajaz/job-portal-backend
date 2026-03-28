@@ -3,6 +3,7 @@ import users from './route/user.route.js'
 import companies from './route/company.route.js'
 import jobs from './route/job.route.js'
 import auth from './route/auth.route.js'
+import skills from './route/skill.route.js'
 import { error } from './middleware/error.middleware.js'
 import { BASE_URL } from './constants.js'
 import cors from 'cors'
@@ -15,6 +16,7 @@ app.use(`${BASE_URL}/auth`, auth);
 app.use(`${BASE_URL}/users`, users);
 app.use(`${BASE_URL}/companies`, companies);
 app.use(`${BASE_URL}/jobs`, jobs);
+app.use(`${BASE_URL}/skills`, skills);
 app.use(error); // error middleware
 
 
