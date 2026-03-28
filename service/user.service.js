@@ -14,13 +14,12 @@ class UserService{
 
     async create(data){
         try{
-            const user = new User(data);
-            return await user.save();
+            return await new User(data).save();
         }
         catch(ex){
             if(ex.code === 11000 && ex.keyPattern.email)
                 throw new AppError(409, AUTH_ERRORS.EMAIL_EXISTS.message, AUTH_ERRORS.EMAIL_EXISTS.code);
-
+            console.log(ex)
             throw new AppError();
         }
     }

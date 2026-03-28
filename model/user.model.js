@@ -2,8 +2,7 @@ import mongoose from "mongoose";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { USER_ROLES } from "../constants.js";
-import { SALT_ROUDS} from '../constants.js'
-import { skillSchema } from './skill.model.js'
+import { SALT_ROUDS } from '../constants.js'
 
 
 
@@ -16,15 +15,14 @@ const userSchema = new mongoose.Schema({
     },
     lastName: {
         type: String,
-        minLength: 1,
         maxLength: 255,
-        required: true
+        default: null
     },
     email: {
         type: String,
-        unique: true,
-        required:true,
         maxLength: 255,
+        unique: true,
+        required: true,
         lowercase: true
     },
     password: {
@@ -34,14 +32,19 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     resume: {
-        type:String,
+        type: String,
         default: null
     },
     role: {
-        type:String,
+        type: String,
         default: USER_ROLES.USER
     },
-    skills: [skillSchema],
+    skills: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Skill",
+        }
+    ],
 
     preferredLocation: {
         type: String,
@@ -49,28 +52,27 @@ const userSchema = new mongoose.Schema({
         default: null,
     }
 
-}, { timestamps:true });
+}, { timestamps: true });
 
 
 // middlewares
-
-userSchema.pre('save', async function(){
-    if(this.isModified('password'))
+userSchema.pre('save', async function () {
+    if (this.isModified('password'))
         this.password = await bcrypt.hash(this.password, SALT_ROUDS);
 });
 
 // methods
-
 userSchema.methods.checkPassword = async function (password) {
     return await bcrypt.compare(password, this.password);
 }
 
-userSchema.methods.generateAccessToken  = function(){
-    return jwt.sign({_id: this._id,
+userSchema.methods.generateAccessToken = function () {
+    return jwt.sign({
+        _id: this._id,
         email: this.email,
         role: this.role
     },
-    process.env.JWT_SECRET_KEY, {expiresIn: process.env.ACCESS_TOKEN_EXPIRY});
+        process.env.JWT_SECRET_KEY, { expiresIn: process.env.ACCESS_TOKEN_EXPIRY });
 }
 
 export const User = mongoose.model("User", userSchema);

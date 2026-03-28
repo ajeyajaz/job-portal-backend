@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
-import { skillSchema } from './skill.model.js'
-import { JOB_TYPE_LIST, JOB_STATUS_LIST, JOB_STATUS } from "../constants.js";
+import { JOB_STATUS_LIST, JOB_STATUS } from "../constants.js";
 
 const jobSchema = new mongoose.Schema({
 
@@ -55,7 +54,14 @@ const jobSchema = new mongoose.Schema({
     default: 0
   },
 
-  // skillsRequired: [skillSchema],
+  skillsRequired: [{
+    _id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Skill",
+      index: true
+    },
+    name: String
+  }],
 
   postedBy: {
     type: mongoose.Schema.Types.ObjectId,
@@ -74,8 +80,8 @@ const jobSchema = new mongoose.Schema({
 
 
 
-jobSchema.pre('save', function(){
-  if(this.isModified('title'))
+jobSchema.pre('save', function () {
+  if (this.isModified('title'))
     this.title_lc = this.title.toLowerCase();
 });
 

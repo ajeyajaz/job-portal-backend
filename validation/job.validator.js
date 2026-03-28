@@ -40,14 +40,12 @@ export const JobSchema = Joi.object({
     .min(0)
     .optional(),
 
-  // skillsRequired: Joi.array().items(
-  //   Joi.object({
-  //     name: Joi.string()
-  //       .hex()
-  //       .length(24)
-  //       .required()
-  //   })
-  // ),
+  skillsRequired: Joi.array().items(
+      Joi.string()
+        .hex()
+        .length(24)
+        .optional()
+  ),
 
   postedBy: Joi.string()
     .hex()

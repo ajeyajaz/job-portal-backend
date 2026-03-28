@@ -4,6 +4,7 @@ import userService from '../service/user.service.js';
 import companyService from '../service/company.service.js';
 import { AUTH_ERRORS, USER_ROLES } from '../constants.js'
 import errorResponse from '../utils/errorResponse.js';
+import skillService from '../service/skill.service.js'
 
 
 export async function postJob(req, res) {
@@ -30,9 +31,9 @@ export async function postJob(req, res) {
     }
 
     //check company
-    const company = await companyService.get({ _id: data.company });
+    const company = await companyService.get({ _id: data.company, recruiter: req.user.id });
     if (!company) {
-        return errorResponse( res,404, "Company not found.","COMPANY_NOT_FOUND");
+        return errorResponse( res, 404, "Company not found.","COMPANY_NOT_FOUND");
     }
 
     // create a job

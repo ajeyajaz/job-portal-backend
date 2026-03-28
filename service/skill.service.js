@@ -4,12 +4,12 @@ import AppError from '../utils/AppError.js';
 
 class SkillService{
 
-    async getAll(filter = {}){
-        return await Skill.find(filter, 'name');
+    async getAll(query, projection = ''){
+        return await Skill.find(query, projection);
     }
 
-    async get(filter){
-        return await Skill.findOne(filter);
+    async get(filter, projection = ''){
+        return await Skill.findOne(filter, projection);
     }
 
     async post(data){

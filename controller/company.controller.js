@@ -7,7 +7,7 @@ export async function createCompany(req, res) {
     // receives - validated
     // name, webiste, about
 
-    const user = await userService.get();
+    const user = await userService.get({_id: req.user.id});
     if(!user) return res.status(404).json({
         success: false,
         message: 'user not found.'

@@ -6,13 +6,11 @@ export const skillSchema = new mongoose.Schema({
         type: String,
         maxLength: 255,
         required: true,
-        trim: true
     },
 
     name_lc: {
         type: String,
         unique: true,
-        trim: true
     }
 
 }, {timestamps: true});

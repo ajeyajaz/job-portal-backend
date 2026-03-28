@@ -42,14 +42,9 @@ export const registerSchema = Joi.object({
 
     lastName: Joi.string()
       .trim()
-      .min(1)
       .max(255)
-      .required()
-      .messages({
-        "string.empty": "Last name is required",
-        "string.min": "Last name must be at least 1 character",
-        "string.max": "Last name must not exceed 255 characters",
-      }),
+      .optional(),
+  
     email: emailRule,
     password: passwordRule,
     role: Joi.
@@ -58,7 +53,7 @@ export const registerSchema = Joi.object({
       .custom((value, helpers)=>{
         const role = value.toUpperCase();
 
-        if(![USER_ROLES.USER, USER_ROLES.RECRUITER].includes(role))
+        if(![USER_ROLES.USER, USER_ROLES.RECRUITER, USER_ROLES.ADMIN].includes(role))
           return helpers.error('string.invalidRole');
         
         return role;

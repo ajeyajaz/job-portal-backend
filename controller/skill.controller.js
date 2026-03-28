@@ -4,7 +4,7 @@ import skillService from '../service/skill.service.js'
 
 export async function getSkills(req, res) {
 
-    const skills = await skillService.getAll();
+    const skills = await skillService.getAll({}, 'name');
     return res.status(201).json({
         success: true,
         data: skills
