@@ -6,9 +6,23 @@ export const skillSchema = new mongoose.Schema({
         type: String,
         maxLength: 255,
         required: true,
+        trim: true
+    },
+
+    name_lc: {
+        type: String,
+        unique: true,
+        trim: true
     }
+
 }, {timestamps: true});
 
+
+skillSchema.pre('save', function(){
+    if(this.isModified('name')){
+        this.name_lc = this.name.toLowerCase();
+    }
+})
 
 
 export const Skill = mongoose.model("Skill", skillSchema);
