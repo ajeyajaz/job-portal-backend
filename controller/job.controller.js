@@ -1,10 +1,8 @@
-import { Job } from '../model/job.model.js'
 import jobService from '../service/job.service.js';
 import userService from '../service/user.service.js';
 import companyService from '../service/company.service.js';
 import { AUTH_ERRORS, USER_ROLES } from '../constants.js'
 import errorResponse from '../utils/errorResponse.js';
-import skillService from '../service/skill.service.js'
 
 
 export async function postJob(req, res) {
@@ -47,8 +45,9 @@ export async function postJob(req, res) {
 
 
 export async function getJobs(req, res) {
-    const jobs = await Job.find();
-    return res.send({
+    const jobs = await jobService.getAll();
+    return res.status(200).json({
+        success: true,
         data: jobs
     })
 }
